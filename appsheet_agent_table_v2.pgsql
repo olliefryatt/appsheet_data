@@ -19,7 +19,9 @@ select
 	transactions_last, -- think this is transactions in last 28 days?
 	activity_last, -- think this is % acticve in last 28 days?
 	age as days_on_app,
-	"nationalId"
+	"nationalId",
+	"appVersion",
+	St_AsText("lastLocation") as location_pin
 from metrics.user_metrics_today
 left join agent on metrics.user_metrics_today.unique_id = agent.uuid
 ),
@@ -40,7 +42,9 @@ select
 	transactions_last,
 	activity_last,
 	days_on_app,
-	"nationalId"
+	"nationalId",
+	location_pin,
+	"appVersion"
 from df1
 left join success_associate on success_associate.uuid = uuid_aba
 )
