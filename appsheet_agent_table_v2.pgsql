@@ -13,15 +13,18 @@ select
 	-- Names, add from agent table
 	"agentName" as agentName,
 	-- About the agent
-	classification_last, -- Should be agent's most recent category
-	has_active_loan_last, -- 1 = yes, has active loan
-	delinquencies_last, -- Not clear what this is / is useful
-	transactions_last, -- think this is transactions in last 28 days?
-	activity_last, -- think this is % acticve in last 28 days?
+	classification,
+	has_active_loan,
+	delinquencies,
+	transactions,
+	activity,
 	age as days_on_app,
 	"nationalId",
 	"appVersion",
-	St_AsText("lastLocation") as location_pin
+	CASE 
+		WHEN "lastLocation" IS NULL THEN ''
+		ELSE CONCAT(ST_Y("lastLocation"), ',', ST_X("lastLocation"))
+		END AS location_pin
 from metrics.user_metrics_today
 left join agent on metrics.user_metrics_today.unique_id = agent.uuid
 ),
@@ -30,24 +33,29 @@ left join agent on metrics.user_metrics_today.unique_id = agent.uuid
 df2 as (
 select
 	-- uuids
-	uuid_agent,
-	uuid_aba,
+	uuid_agent, -- A
+	uuid_aba, -- B
 	-- Names, add from agent table
-	agentName,
-	name as aba_name,
+	agentName, -- C
+	name as aba_name, -- D
 	-- About the agent
-	classification_last,
-	has_active_loan_last,
-	delinquencies_last,
-	transactions_last,
-	activity_last,
-	days_on_app,
-	"nationalId",
-	location_pin,
-	"appVersion"
+	classification, -- E
+	has_active_loan, -- F
+	delinquencies, -- G
+	transactions, -- H
+	activity, -- I
+	days_on_app, -- J
+	"nationalId", -- K
+	location_pin, -- L
+	"appVersion", -- M
+	email as "ABA email",  -- N, ABA email
+	'NA' as "Overdue payments" -- O, Overdue payments
 from df1
 left join success_associate on success_associate.uuid = uuid_aba
 )
 
 select *
 from df2
+where "ABA email" is not null
+and uuid_agent != 'fad43ce1-e967-4871-ba1b-a2da1378bd80' -- Agent has odd data so omited, they are inactice
+

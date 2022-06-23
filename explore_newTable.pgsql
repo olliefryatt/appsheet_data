@@ -1,1 +1,0 @@
-SELECT St_AsText("lastLocation") FROM "agent";
