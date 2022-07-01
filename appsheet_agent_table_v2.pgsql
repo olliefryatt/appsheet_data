@@ -36,18 +36,18 @@ select
 	uuid_agent, -- A
 	uuid_aba, -- B
 	-- Names, add from agent table
-	agentName, -- C
-	name as aba_name, -- D
+	agentName as "Agent", -- C
+	name as "ABA", -- D
 	-- About the agent
-	classification, -- E
-	has_active_loan, -- F
-	delinquencies, -- G
-	transactions, -- H
-	activity, -- I
-	days_on_app, -- J
-	"nationalId", -- K
-	location_pin, -- L
-	"appVersion", -- M
+	classification as "Classification", -- E
+	has_active_loan as "Has actice loan", -- F
+	delinquencies as "Delinquencies", -- G
+	transactions as "Transactions", -- H
+	activity as "Activity", -- I
+	days_on_app as "Days on app", -- J
+	"nationalId" as "National ID", -- K
+	location_pin as "Pin", -- L
+	"appVersion" as "App version", -- M
 	email as "ABA email",  -- N, ABA email
 	'NA' as "Overdue payments" -- O, Overdue payments
 from df1

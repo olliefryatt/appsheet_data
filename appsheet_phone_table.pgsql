@@ -16,10 +16,10 @@ with df_1 as (
 df_2 as (
     select 
         uuid_phone,
-        uuid_agent,
+        CONCAT('A',RIGHT(CONCAT(uuid_agent),5)) as uuid_agent,
         uuid_aba,
-        "agentName",
-        df_1."phoneNumber",
+        "agentName" as "Agent",
+        df_1."phoneNumber" as "Phone number",
         email as "ABA email"
     from df_1
     join success_associate on df_1.uuid_aba = success_associate.uuid
